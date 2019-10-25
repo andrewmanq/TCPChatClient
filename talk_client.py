@@ -7,6 +7,8 @@ import threading
 
 def prRed(skk): print("\033[91m {}\033[00m" .format(skk)) 
 
+DIVIDER = "\n=========================================╣\n"
+
 parser = argparse.ArgumentParser(description="A prattle client")
 
 parser.add_argument("-n", "--name", dest="name", type=str, default="machine name", help="name to be prepended in messages (default: machine name)")
@@ -53,13 +55,18 @@ def sendMessages(sock):
         userMessage = input()
         #userMessage += args.name
         userMessage = name + " says:" + userMessage
+
+        #print(userMessage)
+        print(DIVIDER)
+
         sock.send(userMessage.encode())
 
 def getMessages(sock):
     while True:
         incoming, outcoming, uhoh = select.select([sock], [sock], [sock], 1)
         try:
-            print(sock.recv(1024).decode())
+            newMessg = sock.recv(1024).decode()
+            print(newMessg + DIVIDER)
         except:
             yes = True
 
